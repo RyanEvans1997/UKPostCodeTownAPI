@@ -17,6 +17,11 @@ namespace UKPostCodeTownAPI.Controllers
                 postcode = "CV7 7PT"
             });
 
+            posts.Add(new PostcodeModel
+            {
+                postcode = "CV6 6LP"
+            });
+
             return posts;
             
         }
