@@ -8,22 +8,43 @@ namespace UKPostCodeTownAPI.Controllers
     [ApiController]
     public class PostcodeController : ControllerBase
     {
+
+
         [HttpGet(Name = "GetPostcode")]
         public List<PostcodeModel> Get()
+        {       
+            return PopulateData();           
+        }
+
+        [NonAction]
+        public List<PostcodeModel> PopulateData()
         {
             List<PostcodeModel> posts = new List<PostcodeModel>();
-            posts.Add(new PostcodeModel
+            using (var reader = new StreamReader(@"C:\Users\r.evans\Source\Repos\UKPostCodeTownAPI\UKPostCodeTownAPI\postcodedata.csv"))
             {
-                postcode = "CV7 7PT"
-            });
+                while(!reader.EndOfStream)
+                {
+                    PostcodeModel postcodeEntry = new PostcodeModel();
 
-            posts.Add(new PostcodeModel
-            {
-                postcode = "CV6 6LP"
-            });
+                    var line = reader.ReadLine();
+                    var values = line.Split(",");
 
+                    postcodeEntry.Postcode = values[0];
+                    postcodeEntry.Eastings = values[1];
+                    postcodeEntry.Northings = values[2];
+                    postcodeEntry.Latitude = values[3];
+                    postcodeEntry.Longitude = values[4];
+                    postcodeEntry.Town = values[5];
+                    postcodeEntry.Region = values[6];
+                    postcodeEntry.UkRegion = values[7];
+                    postcodeEntry.Country = values[8];
+                    postcodeEntry.CountryString = values[9];
+
+                    posts.Add(postcodeEntry);
+
+                }
+            }
             return posts;
-            
         }
     }
 }
